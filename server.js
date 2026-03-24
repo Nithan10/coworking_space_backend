@@ -21,7 +21,7 @@ const app = express();
 // ==========================================
 // Enable CORS for frontend communication
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://your-production-url.com'],
+  origin: ['https://coworking-space-one.vercel.app/', 'https://your-production-url.com'],
   credentials: true
 }));
 

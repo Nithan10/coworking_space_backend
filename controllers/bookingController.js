@@ -48,9 +48,9 @@ exports.createBookingAndInitPayment = async (req, res) => {
       merchantUserId: 'MUID' + Date.now(),
       name: fullName,
       amount: amountInPaise, 
-      redirectUrl: `http://localhost:5000/api/bookings/payment/callback/${transactionId}`,
+      redirectUrl: `/api/bookings/payment/callback/${transactionId}`,
       redirectMode: 'POST',
-      callbackUrl: `http://localhost:5000/api/bookings/payment/callback/${transactionId}`,
+      callbackUrl: `https://coworking-space-backend.onrender.com/api/bookings/payment/callback/${transactionId}`,
       mobileNumber: cleanPhone,
       paymentInstrument: {
         type: 'PAY_PAGE'
@@ -100,7 +100,7 @@ exports.createBookingAndInitPayment = async (req, res) => {
 
 exports.paymentCallback = async (req, res) => {
   const { transactionId } = req.params;
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+  const frontendUrl = process.env.FRONTEND_URL || 'http://';
 
   try {
     console.log(`📥 PhonePe Callback Hit for TXN: ${transactionId}`);
@@ -136,7 +136,7 @@ exports.paymentCallback = async (req, res) => {
 
   } catch (error) {
     console.error('Callback Error:', error);
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const frontendUrl = process.env.FRONTEND_URL || 'http://';
     res.redirect(`${frontendUrl}/payment-failed`);
   }
 };

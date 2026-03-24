@@ -159,7 +159,7 @@ const initiatePayment = async (req, res) => {
 
 const paymentCallback = async (req, res) => {
     const { transactionId } = req.params;
-    const frontendBaseUrl = 'http://localhost:3000';
+    const frontendBaseUrl = 'http://';
     
     try {
         console.log(`📥 PhonePe Callback Hit for TXN: ${transactionId}`);

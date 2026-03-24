@@ -19,7 +19,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 
 // Google Callback Route
 router.get('/google/callback', 
-  passport.authenticate('google', { session: false, failureRedirect: 'http://localhost:3000/auth?error=failed' }),
+  passport.authenticate('google', { session: false, failureRedirect: 'https://coworking-space-one.vercel.app/auth?error=failed' }),
   (req, res) => {
     try {
       // Safety check for JWT_SECRET to prevent the "secretOrPrivateKey" crash
@@ -40,12 +40,12 @@ router.get('/google/callback',
       );
       
       // Redirect to frontend, securely passing the token in the URL
-      res.redirect(`http://localhost:3000/auth-success?token=${token}`);
+      res.redirect(`https://coworking-space-one.vercel.app/auth-success?token=${token}`);
       
     } catch (error) {
       console.error('Error generating Google OAuth token:', error);
       // If something breaks, safely redirect back to the login page
-      res.redirect('http://localhost:3000/auth?error=server_error');
+      res.redirect('https://coworking-space-one.vercel.app/auth?error=server_error');
     }
   }
 );
