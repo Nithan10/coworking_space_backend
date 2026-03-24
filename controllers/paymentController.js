@@ -104,7 +104,7 @@ const initiatePayment = async (req, res) => {
 
         console.log("3. Preparing V2 Checkout Payload...");
         // Route back to backend first to handle payment status
-        const returnUrl = `http://localhost:5000/api/payment/callback/${transactionId}`;
+        const returnUrl = `https://coworking-space-backend.onrender.com/api/payment/callback/${transactionId}`;
 
         // Raw JSON Payload for V2
         const paymentPayload = {

@@ -12,7 +12,7 @@ const userRoutes = require('./routes/userRoutes');
 const locationRoutes = require("./routes/locationRoutes");
 const bookingRoutes = require('./routes/bookingRoutes');
 const paymentRoutes = require('./routes/paymentRoutes'); 
-const requestRoutes = require('./routes/requestRoutes'); // <-- ADDED: Request routes
+const requestRoutes = require('./routes/requestRoutes'); 
 
 const app = express();
 
@@ -21,13 +21,17 @@ const app = express();
 // ==========================================
 // Enable CORS for frontend communication
 app.use(cors({
-  origin: ['https://coworking-space-one.vercel.app/', 'https://your-production-url.com'],
+  origin: [
+    'https://coworking-space-one.vercel.app', // <-- FIXED: Removed trailing slash
+    'http://localhost:3000',                  // <-- FIXED: Added for local dev testing
+    'https://your-production-url.com'
+  ],
   credentials: true
 }));
 
 // Parse incoming JSON payloads
 app.use(express.json());
-// Parse URL-encoded data (useful for standard form submissions)
+// Parse URL-encoded data
 app.use(express.urlencoded({ extended: true }));
 
 // ==========================================
@@ -76,8 +80,7 @@ app.use('/api/users', userRoutes);
 app.use("/api/locations", locationRoutes);
 app.use('/api/bookings', bookingRoutes); 
 app.use('/api/payment', paymentRoutes);
-app.use('/api/requests', requestRoutes); // <-- ADDED: Mounted request routes
-
+app.use('/api/requests', requestRoutes); 
 
 // ==========================================
 // 5. ERROR HANDLING MIDDLEWARE
@@ -96,5 +99,5 @@ app.use((err, req, res, next) => {
 // ==========================================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
