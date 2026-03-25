@@ -7,7 +7,12 @@ module.exports = function (passport) {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: process.env.GOOGLE_CALLBACK_URL,
+        // Hardcode the absolute URLs based on environment to prevent Google Cloud mismatches
+        callbackURL: process.env.NODE_ENV === 'production' 
+          ? 'https://coworking-space-backend.onrender.com/api/auth/google/callback'
+          : 'http://localhost:5000/api/auth/google/callback',
+        // THIS IS CRITICAL FOR RENDER: Tells Passport to trust the HTTPS proxy
+        proxy: true 
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
