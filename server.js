@@ -22,8 +22,8 @@ const app = express();
 // Enable CORS for frontend communication
 app.use(cors({
   origin: [
-    'https://coworking-space-one.vercel.app', // <-- FIXED: Removed trailing slash
-    'http://localhost:3000',                  // <-- FIXED: Added for local dev testing
+    'https://coworking-space-one.vercel.app', 
+    'http://localhost:3000',                  
     'https://your-production-url.com'
   ],
   credentials: true
@@ -48,12 +48,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// ==========================================
 // Load Passport Configuration Strategy
-try {
-  require('./config/passport')(passport);
-} catch (error) {
-  console.log('Passport config not found, skipping...');
-}
+// FIXED: Removed the try/catch block so errors aren't hidden!
+// ==========================================
+require('./config/passport')(passport);
 
 // ==========================================
 // 3. DATABASE CONNECTION
