@@ -13,8 +13,7 @@ const requestSchema = new mongoose.Schema({
     enum: ['Pending', 'Approved', 'Rejected'], 
     default: 'Pending' 
   },
-  // NEW FIELDS FOR APPROVAL POPUP
-  expectedDeliveryDate: { type: Date },
+  // NEW FIELD FOR APPROVAL MESSAGE
   adminNote: { type: String }
 }, { timestamps: true });
 

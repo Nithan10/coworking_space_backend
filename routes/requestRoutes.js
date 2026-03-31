@@ -36,11 +36,10 @@ router.get('/all', async (req, res) => {
 // PUT: Admin - Update request status
 router.put('/:id/status', async (req, res) => {
   try {
-    const { status, expectedDeliveryDate, adminNote } = req.body;
+    const { status, adminNote } = req.body;
     
     // Build the update object dynamically
     const updateFields = { status };
-    if (expectedDeliveryDate) updateFields.expectedDeliveryDate = expectedDeliveryDate;
     if (adminNote !== undefined) updateFields.adminNote = adminNote;
 
     const updatedRequest = await Request.findByIdAndUpdate(
@@ -55,4 +54,4 @@ router.put('/:id/status', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = router;   
