@@ -12,12 +12,12 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    // Note: Password is NOT required because users signing up via Google won't have one!
+    required: false // Explicitly false: Google users will not have a password
   },
   googleId: {
     type: String,
     unique: true,
-    sparse: true // This allows multiple users to NOT have a googleId (null) without throwing a unique constraint error
+    sparse: true // CRITICAL: Allows multiple users to have no googleId (null/undefined) without triggering a unique constraint error
   },
   avatar: {
     type: String,
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ['user', 'admin'],
-    default: 'user' // Everyone defaults to a standard user unless specified
+    default: 'user' // Everyone defaults to a standard user
   }
 }, {
   timestamps: true // Automatically adds createdAt and updatedAt dates
