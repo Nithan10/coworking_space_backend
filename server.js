@@ -17,6 +17,13 @@ const requestRoutes = require('./routes/requestRoutes');
 const app = express();
 
 // ==========================================
+// CRITICAL FIX FOR RENDER / DEPLOYMENT
+// ==========================================
+// Tells Express to trust the load balancer/proxy. 
+// This is absolutely REQUIRED for secure cookies and Google OAuth redirects to work correctly via HTTPS.
+app.set('trust proxy', 1);
+
+// ==========================================
 // 1. STANDARD MIDDLEWARE
 // ==========================================
 // Enable CORS for frontend communication
@@ -41,7 +48,12 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'fallback_secret_keep_it_safe',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: process.env.NODE_ENV === 'production' }
+  cookie: { 
+    // Secure must be true in production to send cookies over HTTPS
+    secure: process.env.NODE_ENV === 'production',
+    // 'none' is required for cross-site cookies since your Vercel frontend and Render backend are on different domains
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+  }
 }));
 
 // Initialize Passport

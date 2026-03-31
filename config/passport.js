@@ -7,11 +7,11 @@ module.exports = function (passport) {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        // Hardcode the absolute URLs based on environment to prevent Google Cloud mismatches
+        // Absolute URLs based on environment to prevent Google Cloud mismatches
         callbackURL: process.env.NODE_ENV === 'production' 
           ? 'https://coworking-space-backend.onrender.com/api/auth/google/callback'
           : 'http://localhost:5000/api/auth/google/callback',
-        // THIS IS CRITICAL FOR RENDER: Tells Passport to trust the HTTPS proxy
+        // CRITICAL FOR RENDER: Tells Passport to trust the HTTPS proxy
         proxy: true 
       },
       async (accessToken, refreshToken, profile, done) => {
@@ -24,8 +24,8 @@ module.exports = function (passport) {
             return done(null, user);
           }
 
-          // 2. If not found by Google ID, check if the email already exists in the database
-          // (This happens if they signed up via the Email/Password form previously)
+          // 2. If not found by Google ID, check if the email already exists 
+          // (This happens if they signed up manually via Email/Password previously)
           const email = profile.emails[0].value;
           user = await User.findOne({ email: email });
 
@@ -33,7 +33,7 @@ module.exports = function (passport) {
             // The email exists! Link the Google ID to their existing account
             user.googleId = profile.id;
             
-            // If they didn't have an avatar from manual signup, you can add it here
+            // Add avatar if they didn't have one from manual signup
             if (!user.avatar && profile.photos && profile.photos.length > 0) {
               user.avatar = profile.photos[0].value;
             }
@@ -49,7 +49,6 @@ module.exports = function (passport) {
             email: profile.emails[0].value,
             avatar: profile.photos && profile.photos.length > 0 ? profile.photos[0].value : '',
             role: 'user', // Default role for SpaceHub
-            // Note: We don't set a password here because they use Google to log in
           };
 
           user = await User.create(newUser);
@@ -64,9 +63,8 @@ module.exports = function (passport) {
   );
 
   // --- Serialization ---
-  // Even though we are using JWTs (session: false in our routes), 
-  // Passport sometimes requires these to be defined to prevent internal errors 
-  // during the initial OAuth redirect phase.
+  // Required by Passport's internal mechanics during the OAuth flow, 
+  // even when using JWTs for the final session management.
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });
