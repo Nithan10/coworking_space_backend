@@ -12,7 +12,10 @@ const requestSchema = new mongoose.Schema({
     type: String, 
     enum: ['Pending', 'Approved', 'Rejected'], 
     default: 'Pending' 
-  }
+  },
+  // NEW FIELDS FOR APPROVAL POPUP
+  expectedDeliveryDate: { type: Date },
+  adminNote: { type: String }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Request', requestSchema);

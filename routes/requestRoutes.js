@@ -36,11 +36,19 @@ router.get('/all', async (req, res) => {
 // PUT: Admin - Update request status
 router.put('/:id/status', async (req, res) => {
   try {
+    const { status, expectedDeliveryDate, adminNote } = req.body;
+    
+    // Build the update object dynamically
+    const updateFields = { status };
+    if (expectedDeliveryDate) updateFields.expectedDeliveryDate = expectedDeliveryDate;
+    if (adminNote !== undefined) updateFields.adminNote = adminNote;
+
     const updatedRequest = await Request.findByIdAndUpdate(
       req.params.id, 
-      { status: req.body.status }, 
+      updateFields, 
       { new: true }
     );
+    
     res.status(200).json({ success: true, data: updatedRequest });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
