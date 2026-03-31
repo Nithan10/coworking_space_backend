@@ -159,7 +159,13 @@ const initiatePayment = async (req, res) => {
 
 const paymentCallback = async (req, res) => {
     const { transactionId } = req.params;
-    const frontendBaseUrl = 'http://';
+    
+    // =========================================================================
+    // 🔥 CRITICAL FIX: Tell the backend exactly where the frontend lives
+    // =========================================================================
+    const frontendBaseUrl = process.env.NODE_ENV === 'production' 
+        ? 'https://coworking-space-one.vercel.app' 
+        : 'http://localhost:3000';
     
     try {
         console.log(`📥 PhonePe Callback Hit for TXN: ${transactionId}`);
